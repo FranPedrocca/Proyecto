@@ -1,0 +1,50 @@
+{% extends 'facil/home.html' %}
+
+<body>
+    {% block contenido %}
+        <table>
+            <tr>
+                <td width="200"><h2>Articulos</h2></td>
+                <td>
+                    <a href="{% url 'articulosForm' %}" class="btn btn-primary btn-sm">
+                        <i class="fa fa-plus fa-lg" title="Crear articulos"></i>
+                    </a>
+                </td>
+            </tr>
+        </table>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Articulo</th>
+                    <th>Modelo</th>
+                    <th>Acciones</th>              
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in articulos %}
+                    <tr>
+                         
+                        <td>{{ c.nombreArt }}</td>
+                        <td>{{ c.modeloArt }}</td>
+                        <td>
+                            <a
+                              href="{% url 'actualizarArticulos' c.id %}"
+                              class="btn btn-primary"
+                              style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                              ><i class="fa fa-edit fa-sm" title="Edit Record"></i>
+                            </a>
+                            <a
+                              href="{% url 'borrarArticulos' c.id %}"
+                              class="btn btn-danger"
+                              style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                              ><i class="fa fa-trash fa-sm" title="Delete Record"></i>
+                            </a>                
+                          </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endblock contenido %}
+</body>
+</html>

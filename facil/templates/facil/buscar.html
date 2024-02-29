@@ -1,0 +1,23 @@
+{% extends 'facil/home.html' %}
+
+{% block titulo1 %}
+    <div class="h5 fs-1 text-white mb-4">"Buscar Artículos"</div>        
+{% endblock titulo1 %}   
+
+
+{% block contenido %}
+
+<form action="{% url 'buscarArticulos' %}" method="get" >
+    {% csrf_token %}
+    <p></p>
+    <p></p>
+    <p></p>
+    <p><h6> Datos a Ingresar:</h6></p>
+    
+    <p>Patron a buscar<input type="text" name="buscar" id="buscar"></p>
+    <input type="submit" value="Buscar">
+
+</form>
+
+{% endblock contenido %}
+
