@@ -33,6 +33,11 @@
                 <a class="navbar-brand" href="{% url 'usuarios' %} ">Usuarios</a>
                 <a class="navbar-brand" href="{% url 'acerca' %} ">Acerca</a>
                 <a class="navbar-brand" href="{% url 'contacto' %} ">Contacto</a>
+
+                
+                <p style="color:green">Hola {{user.username}}!</p>
+                <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+
                 {%else%}
                 <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
                 <a class="btn btn-success" href="{% url 'registro' %}">Registro</a>
@@ -47,7 +52,9 @@
         Mashead header
         <header class="masthead">
             <div class="container px-5">
-                  
+                {% block contenido %}
+        
+                {% endblock contenido %}
                 <div class="row gx-5 align-items-center">
                     
                     <div class="col-lg-6">
@@ -185,9 +192,7 @@
             </div>
         </section> -->
         
-        {% block contenido %}
-        
-        {% endblock contenido %} 
+         
         <!-- Footer------------------------------------------------------------------------------------------------------------------------------------------------------------>
         <footer class="bg-black text-center py-5">
             <div class="container px-5">

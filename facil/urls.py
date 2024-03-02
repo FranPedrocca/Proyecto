@@ -1,5 +1,7 @@
 from django.urls import path, include
 from .views import * 
+
+
 urlpatterns = [
     path('', home, name= "home"), 
     path('articulos/', articulos, name= "articulos"),    
@@ -27,9 +29,11 @@ urlpatterns = [
 
 #--------------------------------Login,Logout,Registarse-----------------------------
     path('login/', login_request, name= "login"),  
-    path('registro/', register, name= "registro"),      
+    path('registro/', register, name= "registro"), 
+    path('logout/', custom_logout, name= "logout"),
+         
       
-]
+]            
 
 
 

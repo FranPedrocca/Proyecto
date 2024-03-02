@@ -8,30 +8,39 @@ from django.views.generic import CreateView
 from django.views.generic import UpdateView
 from django.views.generic import DeleteView
 
+
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth       import authenticate, login
+from django.contrib.auth       import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
 def home(request):
     return render(request,"facil/home.html")
 
+@login_required
 def articulos(request):
     contexto = {'articulos': Articulo.objects.all()}
     return render(request,"facil/articulos.html", contexto)
 
+@login_required
 def comentarios(request):
     return render(request,"facil/comentarios.html")
 
+@login_required
 def acerca(request):
     return render(request,"facil/acerca.html")
 
+@login_required
 def contacto(request):
     return render(request,"facil/contacto.html")
 
+@login_required
 def buscar(request):
     return render(request, "facil/buscar.html")
 
+@login_required
 def usuarios(request):
     return render(request, "facil/usuarios.html")
 
@@ -44,7 +53,7 @@ def usuarios(request):
 #---------------------Acciones---------------------------------------------
 
 #----------------------------Crea--------------------------------------------
-
+@login_required
 def createArticulo(request):
     
     if request.method == "POST":
@@ -61,7 +70,7 @@ def createArticulo(request):
     return render(request, "facil/articulosForm.html", {"form":miform})
 
 #-------------------------------Busca-----------------------------------------------
-
+@login_required
 def buscarArticulos(request):
     patron = request.GET.get("buscar", None)
     if patron:
@@ -71,7 +80,7 @@ def buscarArticulos(request):
     return HttpResponse("No se ingresaron patrones de búsqueda")
 
 #---------------------------------------------Edita o Actualiza------------------------------------------------------------
-
+@login_required
 def updateArticulos(request, id_articulo):
     articulo= Articulo.objects.get(id= id_articulo)
     if request.method== "POST":
@@ -88,7 +97,7 @@ def updateArticulos(request, id_articulo):
     return render(request, "facil/articulosForm.html", {"form":miform})
 
 #-------------------------------------------Elimina---------------------------------------------------------------
-
+@login_required
 def deleteArticulos(request, id_articulo):
     articulos= Articulo.objects.get(id=id_articulo)
     articulos.delete()
@@ -119,6 +128,7 @@ class UsuarioDelete(DeleteView):
 
 
 #---------------------------------Login, Logout, Registrarse,-------------------------------------------------
+
 def login_request(request):
     if request.method == "POST":
         usuario = request.POST['username']
@@ -128,7 +138,7 @@ def login_request(request):
             login(request, user)
             return render(request, "facil/home.html")
         else:
-            return redirect(reverse_lazy('login'))
+            return redirect(reverse_lazy('home'))
     
     miform= AuthenticationForm()
     
@@ -148,3 +158,12 @@ def register(request):
         miform= RegistroForm()
     
     return render(request, "facil/registro.html", {"form":miform})
+
+
+
+
+def custom_logout(request):
+    logout(request)
+    return redirect(reverse_lazy('home'))
+
+
