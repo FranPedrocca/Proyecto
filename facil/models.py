@@ -30,6 +30,7 @@ class Usuario(models.Model):
 class Contraseña(models.Model):
      claveUsuario= models.CharField(max_length=30)
      clavePass   = models.CharField(max_length=30)
+     
 
 
 

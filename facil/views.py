@@ -19,10 +19,16 @@ from django.contrib.auth.decorators import login_required
 def home(request):
     return render(request,"facil/home.html")
 
-@login_required
+# @login_required
 def articulos(request):
     contexto = {'articulos': Articulo.objects.all()}
     return render(request,"facil/articulos.html", contexto)
+
+# @login_required
+def articulo(request):
+    # enviar no Articulo.objects.all() sino el id específico del artículo que seleccionó el usuario
+    contexto = {'articulo': Articulo.objects.all()}
+    return render(request,"facil/articulo.html", contexto)
 
 @login_required
 def comentarios(request):
@@ -37,6 +43,10 @@ def contacto(request):
     return render(request,"facil/contacto.html")
 
 @login_required
+def perfil(request):
+    return render(request,"facil/perfil.html")
+
+@login_required
 def buscar(request):
     return render(request, "facil/buscar.html")
 
@@ -47,6 +57,9 @@ def usuarios(request):
 
 
 
+# AGREGAR FUNCIÓN PARA RENDERIZAR LAS ESPECIFICACIONES DE UN ARTICULO
+def verArticulo(request):
+  pass
 
 #------------------------------Forms-------------------------------------------------------------------------
 
@@ -106,23 +119,25 @@ def deleteArticulos(request, id_articulo):
 
 #----------------------------------------Usuarios---------------------------------------------------------------
 
-
-
-
-class UsuarioList(ListView):
+class UsuarioList(LoginRequiredMixin, ListView):
+    # La siguiente línea es la que agregamos 
+    login_url = reverse_lazy('login')
     model= Usuario
 
-class UsuarioCreate(CreateView):
+    class login_required_mixin_admin(LoginRequiredMixin):
+        model= reverse_lazy('login')
+
+class UsuarioCreate(LoginRequiredMixin, CreateView):
     model= Usuario
     fields= ['nombre','apellido','email']   #Los campos que quiero que me muestre en el formulario, son exactamente los que están en el models.
     success_url= reverse_lazy('usuarios')
 
-class UsuarioUpdate(UpdateView):
+class UsuarioUpdate(LoginRequiredMixin, UpdateView):
     model= Usuario
     fields= ['nombre','apellido','email']  
     success_url= reverse_lazy('usuarios')
 
-class UsuarioDelete(DeleteView):
+class UsuarioDelete(LoginRequiredMixin, DeleteView):
     model= Usuario
     success_url= reverse_lazy('usuarios')
 
@@ -144,8 +159,6 @@ def login_request(request):
     
     return render(request, "facil/login.html", {"form":miform})
 
-
-
 def register(request):
     if request.method == "POST":
         miform= RegistroForm(request.POST)
@@ -159,11 +172,26 @@ def register(request):
     
     return render(request, "facil/registro.html", {"form":miform})
 
-
-
-
 def custom_logout(request):
     logout(request)
     return redirect(reverse_lazy('home'))
+
+#----------------------------------------------Editar perfil--------------------------------------
+
+@login_required
+def editarperfil(request):
+    usuario= request.user
+
+    if request.method == "POST":
+        miform= RegistroForm(request.POST)
+        if miform.is_valid():
+            usuario = miform.cleaned_data.get("username")
+            miform.save()
+            return redirect(reverse_lazy('home'))
+        
+    else:
+        miform= RegistroForm()
+    
+    return render(request, "facil/registro.html", {"form":miform})
 
 

@@ -8,6 +8,7 @@ urlpatterns = [
     path('comentarios/', comentarios, name= "comentarios"),  
     path('acerca/', acerca, name= "acerca"),  
     path('contacto/', contacto, name= "contacto"),
+    path('perfil/', perfil, name= "perfil"),
 
 #--------------------------------Usuarios-----------------------------
     path('usuarios/', UsuarioList.as_view(), name= "usuarios"),
@@ -22,6 +23,7 @@ urlpatterns = [
     path('articulosForm/', createArticulo, name= "articulosForm"),
     path('actualizar_articulos/<id_articulo>/', updateArticulos, name= "actualizarArticulos"),
     path('borrar_articulos/<id_articulo>/', deleteArticulos, name= "borrarArticulos"),
+    path('ver_articulo/<id_articulo>/', verArticulo, name= "verArticulo"),
     
 
     path('buscar/', buscar, name= "buscar"),
