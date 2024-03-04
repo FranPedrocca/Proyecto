@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -30,7 +31,45 @@ class Usuario(models.Model):
 class Contraseña(models.Model):
      claveUsuario= models.CharField(max_length=30)
      clavePass   = models.CharField(max_length=30)
-     
+
+
+class Admin(models.Model):
+    nombre= models.CharField(max_length=40, null=True)
+    apellido= models.CharField(max_length=40, null=True)
+    email= models.EmailField(max_length=40, null=True)
+
+    def __str__(self):
+        return f"{self.nombre},{self.apellido}"
+
+
+class Avatar(models.Model):
+    imagen= models.ImageField(upload_to="avatares")
+    user= models.ForeignKey(User, on_delete=models.CASCADE)
+    email= models.EmailField(max_length=40, null=True)
+
+    def __str__(self):
+        return f"{self.nombre},{self.user} {self.imagen}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

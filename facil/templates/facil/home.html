@@ -37,6 +37,8 @@
 
                 
                 <p style="color:green">Hola {{user.username}}!</p>
+                
+                <a class="btn btn-primary" href="{% url 'editar_perfil' %}">Perfil</a>
                 <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
 
                 {%else%}

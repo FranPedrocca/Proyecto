@@ -119,6 +119,7 @@ def deleteArticulos(request, id_articulo):
 
 #----------------------------------------Usuarios---------------------------------------------------------------
 
+
 class UsuarioList(LoginRequiredMixin, ListView):
     # La siguiente línea es la que agregamos 
     login_url = reverse_lazy('login')
@@ -151,6 +152,15 @@ def login_request(request):
         user= authenticate(request, username=usuario, password=password)
         if user is not None:
             login(request, user)
+
+            #Intenta traer el avatar si es que tiene:
+            try:
+                avatar= Avatar.objects.get(user=request.user.id).imagen.url
+            except:
+                avatar= "/media/avatares/default.png"
+            finally:
+                request.session["avatar"]= avatar
+
             return render(request, "facil/home.html")
         else:
             return redirect(reverse_lazy('home'))
@@ -183,15 +193,46 @@ def editarperfil(request):
     usuario= request.user
 
     if request.method == "POST":
-        miform= RegistroForm(request.POST)
-        if miform.is_valid():
-            usuario = miform.cleaned_data.get("username")
-            miform.save()
-            return redirect(reverse_lazy('home'))
+        form= UsereditForm(request.POST)
+        if form.is_valid():
+            informacion = form.cleaned_data
+            user= User.objects.get(username=usuario)
+            user.email= informacion['email']
+            user.first_name= informacion['first_name']
+            user.last_name= informacion['last_name']
+            user.set_password(informacion['password1'])
+            form.save()
+            return render(request, "facil/home.html")
         
     else:
-        miform= RegistroForm()
+        form= UsereditForm(instance=usuario)
     
-    return render(request, "facil/registro.html", {"form":miform})
+    return render(request, "facil/editarperfil.html", {"form":form})
 
 
+
+@login_required
+def agregarAvatar(request):
+
+    if request.method == "POST":
+        form= AvatarForm(request.POST, request.FILES)
+        if form.is_valid():
+            usuario= User.objects.get(username=request.user)
+
+            #----------------Borra avatar viejo
+            avatarViejo= Avatar.objects.filter(user=usuario)
+            if len(avatarViejo) >0:
+                for i in range(len(avatarViejo)):
+                    avatarViejo[i].delete()
+
+            avatar= Avatar(user=usuario, imagen=form.cleaned_data['imagen'])
+            avatar.save()
+
+            imagen=Avatar.objects.get(user=request.user.id).imagen.url
+            request.session["avatar"] =imagen
+            return render(request, "facil/home.html")           
+        
+    else:
+        form= AvatarForm()
+    
+    return render(request, "facil/agregarAvatar.html", {"form":form})

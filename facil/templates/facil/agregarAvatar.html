@@ -1,0 +1,22 @@
+{% extends 'facil/home.html' %}
+
+{% block titulo1 %}
+    <div class="mb-4">"Avatar"</div>        
+{% endblock titulo1 %}   
+
+
+{% block contenido %}
+<h2>Usuario</h2>
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <table>
+        {{ form.as_table}}
+    </table>
+
+    <input type="submit" value="Actualizar Avatar">
+
+</form>
+
+{% endblock contenido %}
+

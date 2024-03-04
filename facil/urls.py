@@ -33,6 +33,8 @@ urlpatterns = [
     path('login/', login_request, name= "login"),  
     path('registro/', register, name= "registro"), 
     path('logout/', custom_logout, name= "logout"),
+    path('editar_perfil/', editarperfil, name= "editar_perfil"),
+    path('agregarAvatar/', agregarAvatar, name= "agregarAvatar"),
          
       
 ]            
