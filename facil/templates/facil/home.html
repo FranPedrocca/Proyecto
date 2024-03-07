@@ -34,7 +34,9 @@
                 <a class="navbar-brand" href="{% url 'acerca' %} ">Acerca</a>
                 <!-- <a class="navbar-brand" href="{% url 'contacto' %} ">Contacto</a> -->
                 <a class="navbar-brand" href="{% url 'perfil' %} ">Mi perfil</a>
-
+                <div class="text-center">
+                    <a  href="{% url 'agregarAvatar' %}" ><img src="{{ request.session.avatar }}" height="40px" weight="40px"/></a>
+                </div>         
                 
                 <p style="color:green">Hola {{user.username}}!</p>
                 

@@ -236,3 +236,4 @@ def agregarAvatar(request):
         form= AvatarForm()
     
     return render(request, "facil/agregarAvatar.html", {"form":form})
+
